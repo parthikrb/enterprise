@@ -1,0 +1,44 @@
+type User
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin"] }
+      {
+        allow: groups
+        groups: ["Managers"]
+        queries: [get, list]
+        mutations: [create, update, delete]
+      }
+      { allow: groups, groups: ["Employees"], queries: [get], mutations: null }
+    ]
+  ) {
+  id: ID!
+  firstname: String!
+  lastname: String
+  username: String
+  password: String
+  email: String
+  role: Designation
+  picture: S3Object
+  status: UserStatus
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}
+
+enum Designation {
+  developer
+  qualityanalyst
+  businessanalyst
+  productowner
+  scrummaster
+  manager
+}
+
+enum UserStatus {
+  active
+  inactive
+}
