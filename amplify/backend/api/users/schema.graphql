@@ -1,17 +1,4 @@
-type User
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["Admin"] }
-      {
-        allow: groups
-        groups: ["Managers"]
-        queries: [get, list]
-        mutations: [create, update, delete]
-      }
-      { allow: groups, groups: ["Employees"], queries: [get], mutations: null }
-    ]
-  ) {
+type User @model @key(name: "byUser", fields: ["id", "username", "firstname", "lastname", "email", "role"]) @auth(rules: [{allow: owner, operations: [read, update]}]) {
   id: ID!
   firstname: String!
   lastname: String
@@ -20,7 +7,19 @@ type User
   email: String
   role: Designation
   picture: S3Object
-  status: UserStatus
+  status: Status
+}
+
+type Squad @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  squadname: String!
+  productowner: [User] @connection(keyName: "byUser", fields: ["id"])
+  scrummaster: [User] @connection(keyName: "byUser", fields: ["id"])
+  scrumteam: [User] @connection(keyName: "byUser", fields: ["id"])
+  velocity: Int
+  status: Status
+  createdby: String
+  updatedby: String
 }
 
 type S3Object {
@@ -38,7 +37,8 @@ enum Designation {
   manager
 }
 
-enum UserStatus {
+enum Status {
   active
   inactive
 }
+ 

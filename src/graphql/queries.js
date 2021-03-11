@@ -50,3 +50,92 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const getSquad = /* GraphQL */ `
+  query GetSquad($id: ID!) {
+    getSquad(id: $id) {
+      id
+      squadname
+      productowner {
+        items {
+          id
+          firstname
+          lastname
+          username
+          password
+          email
+          role
+          status
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      scrummaster {
+        items {
+          id
+          firstname
+          lastname
+          username
+          password
+          email
+          role
+          status
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      scrumteam {
+        items {
+          id
+          firstname
+          lastname
+          username
+          password
+          email
+          role
+          status
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      velocity
+      status
+      createdby
+      updatedby
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSquads = /* GraphQL */ `
+  query ListSquads(
+    $filter: ModelSquadFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSquads(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        squadname
+        productowner {
+          nextToken
+        }
+        scrummaster {
+          nextToken
+        }
+        scrumteam {
+          nextToken
+        }
+        velocity
+        status
+        createdby
+        updatedby
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
